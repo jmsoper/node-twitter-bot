@@ -1,11 +1,19 @@
 {
   "name": "twitter-node-bot",
   "version": "1.0.0",
-  "description": "A twitter node bot",
+  "description": "first version of a twitter node bot",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "househaunt",
-  "license": "ISC"
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jmsoper/node-twitter-bot.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jmsoper/node-twitter-bot/issues"
+  },
+  "homepage": "https://github.com/jmsoper/node-twitter-bot#readme"
 }
