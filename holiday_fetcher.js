@@ -1,13 +1,18 @@
 var http = require('http');
 
+var urlBase = 'http://ec2-54-209-46-6.compute-1.amazonaws.com';
 
-var urlBase = 'http://aws_example_url.com:3000/';
-
-function holidayFetcher(date){
+function holidayFetcher(date, tweetFunc){
   var url = urlBase + date;
-  http.get(url, function(error, response){
+  http.get(url, function(response){
+    console.log("Fetching holiday");
+    console.log(response);
     var statusCode = response.statusCode;
     var contentType = response.headers['content-type'];
+
+    var statusCode = response.statusCode;
+    var contentType = response.headers['content-type'];
+    var parsedData;
 
     errorHandling(response);
 
@@ -17,9 +22,12 @@ function holidayFetcher(date){
      rawData += chunk });
     response.on('end', function(){
       try {
-        var parsedData = JSON.parse(rawData);
-        console.log(parsedData);
-      } catch function(e){
+        parsedData = JSON.parse(rawData);
+        if (parsedData.isAHoliday){
+          console.log("Today is a holiday -- proceeding with tweet.");
+          tweetFunc(parsedData);
+        }
+      } catch (e){
         console.log(e.message);
       }
     });
@@ -38,7 +46,8 @@ function errorHandling(response){
   if (statusCode !== 200) {
     error = new Error(`Request Failed.\n` +
                       `Status Code: ${statusCode}`);
-  } else if (!/^application\/json/.test(contentType)) {
+  }
+  else if (!/^application\/json/.test(contentType)) {
     error = new Error(`Invalid content-type.\n` +
                       `Expected application/json but received ${contentType}`);
   }
